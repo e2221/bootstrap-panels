@@ -10,6 +10,6 @@
     "e2221/html-element": "^v1.7-beta.3"
   },
   "autoload": {
-    "psr-4": { "e2221\\bootstrap-panels\\": "src" }
+    "psr-4": { "e2221\\BootstrapPanels\\": "src" }
   }
 }
