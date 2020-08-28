@@ -1,0 +1,12 @@
+{
+  "name": "e2221/bootstrap-panels",
+  "description": "Nette 3 component",
+  "type": "library",
+  "require": {
+    "nette/application": "^3.0",
+    "nette/component-model": "^3.0",
+    "nette/utils": "^3.1",
+    "latte/latte": "^2.8",
+    "e2221/html-element": "^v1.7-beta.3"
+  }
+}

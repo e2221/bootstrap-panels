@@ -1,0 +1,11 @@
+{templateType App\Utils\BootstrapComponents\BootstrapPanels\BootstrapPanelsTemplate}
+
+{snippet panels}
+    {foreach $templates as $template}
+        {import $template}
+    {/foreach}
+
+    {snippet body}
+        {include #body}
+    {/snippet}
+{/snippet}
