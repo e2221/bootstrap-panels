@@ -8,5 +8,8 @@
     "nette/utils": "^3.1",
     "latte/latte": "^2.8",
     "e2221/html-element": "^v1.7-beta.3"
+  },
+  "autoload": {
+    "psr-4": { "e2221\\bootstrap-panels\\": "src" }
   }
 }
