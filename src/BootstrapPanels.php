@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace e2221\BootstrapPanels;
 
-use e2221\BootstrapPanels\Components\BodyHeaderTabsItemsLinks;
-use e2221\BootstrapPanels\Components\BodyHeaderTabsItemsTemplate;
 use e2221\BootstrapPanels\Components\Templates;
 use e2221\BootstrapPanels\Exceptions\UnexistingPannelException;
 use e2221\HtmElement\BaseElement;
@@ -71,11 +69,12 @@ class BootstrapPanels extends Control
      * Add Panel
      * @param string $id
      * @param string|null $title
-     * @return Panel
+     * @return BootstrapPanels
      */
-    public function addPanel(string $id, string $title=null): Panel
+    public function addPanel(string $id, string $title=null): BootstrapPanels
     {
-        return $this->panels[$id] = new Panel($id, $title);
+        $this->panels[$id] = new Panel($id, $title);
+        return $this;
     }
 
     /**
