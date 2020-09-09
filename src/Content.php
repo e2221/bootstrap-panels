@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace e2221\BootstrapPanels;
 
 use e2221\HtmElement\BaseElement;
+use e22221\BootstrapPanels\Panel;
 use Nette\ComponentModel\IComponent;
 use Nette\Utils\Html;
 
@@ -17,16 +18,27 @@ class Content
 
     /** @var Html|BaseElement|null */
     protected $wrapper;
+    /**
+     * @var Panel
+     */
+    private Panel $panel;
 
     /**
      * Content constructor.
+     * @param Panel $panel
      * @param string $name
      * @param string|IComponent|Html|BaseElement $content
      */
-    public function __construct(string $name, $content)
+    public function __construct(Panel $panel, string $name, $content)
     {
         $this->name = $name;
         $this->content = $content;
+        $this->panel = $panel;
+    }
+
+    public function getPanel(): Panel
+    {
+        return $this->panel;
     }
 
     /**

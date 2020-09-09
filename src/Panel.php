@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace e22221\BootstrapPanels;
 
+use e2221\BootstrapPanels\BootstrapPanels;
 use e2221\BootstrapPanels\Content;
 use e2221\HtmElement\BaseElement;
+use Nette\ComponentModel\IComponent;
 use Nette\Utils\Html;
 
 class Panel
@@ -20,12 +22,17 @@ class Panel
 
     /** @var Content[] */
     protected array $content=[];
+    /**
+     * @var BootstrapPanels
+     */
+    private BootstrapPanels $bootstrapPanels;
 
 
-    public function __construct(string $id, ?string $title=null)
+    public function __construct(BootstrapPanels $bootstrapPanels, string $id, ?string $title=null)
     {
         $this->id = $id;
         $this->title = $title ?? $id;
+        $this->bootstrapPanels = $bootstrapPanels;
     }
 
     public function getTitle(): string
@@ -73,7 +80,9 @@ class Panel
      */
     public function addContent(string $name, $content): Content
     {
-        return $this->content[$name] = new Content($name, $content);
+        if($content instanceof IComponent)
+            $this->bootstrapPanels->addComponent($content, $name);
+        return $this->content[$name] = new Content($this, $name, $content);
     }
 
     public function render()

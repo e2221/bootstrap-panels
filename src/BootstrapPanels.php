@@ -69,12 +69,11 @@ class BootstrapPanels extends Control
      * Add Panel
      * @param string $id
      * @param string|null $title
-     * @return BootstrapPanels
+     * @return Panel
      */
-    public function addPanel(string $id, string $title=null): BootstrapPanels
+    public function addPanel(string $id, string $title=null): Panel
     {
-        $this->panels[$id] = new Panel($id, $title);
-        return $this;
+        return $this->panels[$id] = new Panel($this, $id, $title);
     }
 
     /**
