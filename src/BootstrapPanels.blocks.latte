@@ -12,13 +12,13 @@
                         {include #body-header-tabs-inner}
                     {include #body-header-tabs-end}
                 </div>
-                <div class="col">
-                    {ifset #body-right-content}
+                {ifset #body-right-content}
+                    <div class="col">
                         <div class="float-right">
                             {include #body-right-content}
                         </div>
-                    {/ifset}
-                </div>
+                    </div>
+                {/ifset}
             </div>
         {include #body-header-end-tag}
 
