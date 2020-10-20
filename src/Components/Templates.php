@@ -4,36 +4,20 @@
 namespace e2221\BootstrapPanels\Components;
 
 
+use e2221\BootstrapPanels\BootstrapPanels;
+
 class Templates
 {
-
     private BodyTemplate $bodyTemplate;
-    /**
-     * @var BodyHeaderTemplate
-     */
     private BodyHeaderTemplate $bodyHeaderTemplate;
-    /**
-     * @var BodyHeaderTabsTemplate
-     */
     private BodyHeaderTabsTemplate $bodyHeaderTabsTemplate;
-    /**
-     * @var BodyHeaderTabsItemsTemplate
-     */
     private BodyHeaderTabsItemsTemplate $bodyHeaderTabsItemsTemplate;
-    /**
-     * @var BodyHeaderTabsItemsLinks
-     */
     private BodyHeaderTabsItemsLinks $bodyHeaderTabsLinksTemplate;
-    /**
-     * @var BodyHeaderTabsAllTemplate
-     */
     private BodyHeaderTabsAllTemplate $bodyHeaderTabsAllTemplate;
-    /**
-     * @var BodyBodyTemplate
-     */
     private BodyBodyTemplate $bodyBodyTemplate;
+    private HeaderRightContent $headerRightContent;
 
-    public function __construct()
+    public function __construct(BootstrapPanels $bootstrapPanels)
     {
         $this->bodyTemplate = new BodyTemplate();
         $this->bodyHeaderTemplate = new BodyHeaderTemplate();
@@ -42,9 +26,11 @@ class Templates
         $this->bodyHeaderTabsLinksTemplate = new BodyHeaderTabsItemsLinks();
         $this->bodyHeaderTabsAllTemplate = new BodyHeaderTabsAllTemplate();
         $this->bodyBodyTemplate = new BodyBodyTemplate();
+        $this->headerRightContent = new HeaderRightContent($bootstrapPanels);
     }
 
     /**
+     * Get body template
      * @return BodyTemplate
      */
     public function getBodyTemplate(): BodyTemplate
@@ -53,6 +39,16 @@ class Templates
     }
 
     /**
+     * Get header right content
+     * @return HeaderRightContent
+     */
+    public function getHeaderRightContent(): HeaderRightContent
+    {
+        return $this->headerRightContent;
+    }
+
+    /**
+     * Get body header template
      * @return BodyHeaderTemplate
      */
     public function getBodyHeaderTemplate(): BodyHeaderTemplate
@@ -61,6 +57,7 @@ class Templates
     }
 
     /**
+     * Get body header tabs template
      * @return BodyHeaderTabsTemplate
      */
     public function getBodyHeaderTabsTemplate(): BodyHeaderTabsTemplate
@@ -69,6 +66,7 @@ class Templates
     }
 
     /**
+     * Get body header tabs items template
      * @return BodyHeaderTabsItemsTemplate
      */
     public function getBodyHeaderTabsItemsTemplate(): BodyHeaderTabsItemsTemplate
@@ -77,6 +75,7 @@ class Templates
     }
 
     /**
+     * Get body header tabs links template
      * @return BodyHeaderTabsItemsLinks
      */
     public function getBodyHeaderTabsLinksTemplate(): BodyHeaderTabsItemsLinks
@@ -85,6 +84,7 @@ class Templates
     }
 
     /**
+     * Get body header tabs all template
      * @return BodyHeaderTabsAllTemplate
      */
     public function getBodyHeaderTabsAllTemplate(): BodyHeaderTabsAllTemplate

@@ -1,6 +1,6 @@
 {templateType e2221\BootstrapPanels\BootstrapPanelsTemplate}
 
-{snippet panels}
+<div n:snippet="panels" class="bootstrap-panels">
     {foreach $templates as $template}
         {import $template}
     {/foreach}
@@ -8,4 +8,4 @@
     {snippet body}
         {include #body}
     {/snippet}
-{/snippet}
+</div>

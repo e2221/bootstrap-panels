@@ -7,16 +7,14 @@
         {include #body-header-start-tag}
             {include #body-title}
             <div class="row">
-                <div class="col">
+                <div class="col col-sm-10">
                     {include #body-header-tabs-start}
                         {include #body-header-tabs-inner}
                     {include #body-header-tabs-end}
                 </div>
                 {ifset #body-right-content}
-                    <div class="col">
-                        <div class="float-right">
-                            {include #body-right-content}
-                        </div>
+                    <div class="col col-sm-2">
+                        {include #body-right-content}
                     </div>
                 {/ifset}
             </div>
@@ -30,6 +28,10 @@
             {/ifset}
         {include #body-body-end-tag}
     {include #body-end-tag}
+{/block}
+
+{block body-right-content}
+    {$documentTemplates->getHeaderRightContent()->render()|noescape}
 {/block}
 
 {block body-start-tag}

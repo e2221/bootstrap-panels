@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace e2221\BootstrapPanels;
 
+use e2221\Actions\ActionButton;
 use e2221\BootstrapPanels\Components\Templates;
 use e2221\BootstrapPanels\Exceptions\UnexistingPannelException;
 use e2221\HtmElement\BaseElement;
@@ -23,22 +24,48 @@ class BootstrapPanels extends Control
     /** @var Panel[]  */
     protected array $panels=[];
 
+    /** @var ActionButton[] */
+    protected array $actionButtons=[];
+
     /** @var string @persistent */
     public string $panel='';
 
+    /** @var Templates Document templates */
     private Templates $documentTemplates;
-
 
     public function __construct()
     {
-        $this->documentTemplates = new Templates();
+        $this->documentTemplates = new Templates($this);
     }
 
+    /**
+     * Get document templates
+     * @return Templates
+     */
     public function getDocumentTemplates(): Templates
     {
         return $this->documentTemplates;
     }
 
+    /**
+     * Get action buttons
+     * @return ActionButton[]
+     */
+    public function getActionButtons(): array
+    {
+        return $this->actionButtons;
+    }
+
+    /**
+     * Add action button
+     * @param string $name
+     * @param string|null $title
+     * @return ActionButton
+     */
+    public function addActionButton(string $name, ?string $title=null)
+    {
+        return $this->actionButtons[] = new ActionButton($name, $title);
+    }
 
     /**
      * @param BaseElement|Html|string|null $title
@@ -192,7 +219,6 @@ class BootstrapPanels extends Control
 
     public function render(): void
     {
-
         $this->template->documentTemplates = $this->getDocumentTemplates();
         $this->template->templates = $this->getTemplates();
         $this->template->panels = $this->panels;
