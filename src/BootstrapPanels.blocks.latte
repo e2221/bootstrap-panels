@@ -46,7 +46,7 @@
 {/block}
 
 {block body-title}
-    {$control->getTitle()?->render()}
+    {$control->getTitle()?->render()|noescape}
 {/block}
 
 {* body-header start tag *}
