@@ -80,7 +80,7 @@ class Panel
      */
     public function addContent(string $name, $content): Content
     {
-        if($content instanceof IComponent)
+        if($content instanceof IComponent && is_null($content->getPresenter()))
             $this->bootstrapPanels->addComponent($content, $name);
         return $this->content[$name] = new Content($this, $name, $content);
     }
@@ -90,7 +90,7 @@ class Panel
         $render = [];
         foreach($this->content as $contentName => $content)
         {
-             $render[] = $content->render();
+            $render[] = $content->render();
         }
         return implode("",$render);
     }
