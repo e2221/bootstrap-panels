@@ -11,7 +11,6 @@ use e22221\BootstrapPanels\Panel;
 use Exception;
 use Nette\Application\UI\Control;
 use Nette\Bridges\ApplicationLatte\Template;
-use Nette\ComponentModel\IComponent;
 use Nette\Utils\Html;
 
 class BootstrapPanels extends Control
@@ -33,9 +32,23 @@ class BootstrapPanels extends Control
     /** @var Templates Document templates */
     private Templates $documentTemplates;
 
+    /** @var callable|null */
+    protected $beforeRenderCallback=null;
+
     public function __construct()
     {
         $this->documentTemplates = new Templates($this);
+    }
+
+    /**
+     * Set before render callback
+     * @param callable|null $beforeRenderCallback
+     * @return BootstrapPanels
+     */
+    public function setBeforeRenderCallback(?callable $beforeRenderCallback): self
+    {
+        $this->beforeRenderCallback = $beforeRenderCallback;
+        return $this;
     }
 
     /**
@@ -104,6 +117,19 @@ class BootstrapPanels extends Control
     }
 
     /**
+     * Set active panel
+     * @param string $panel
+     * @return $this
+     * @throws UnexistingPannelException
+     */
+    public function setPanel(string $panel, bool $throw=true): self
+    {
+        if($this->getPanel($panel, $throw))
+            $this->panel = $panel;
+        return $this;
+    }
+
+    /**
      * Add content to panel (primary for add IComponent content)
      * @param string $panelId
      * @param $name
@@ -114,21 +140,24 @@ class BootstrapPanels extends Control
     public function addContent(string $panelId, $name, $content): Content
     {
         $panel = $this->getPanel($panelId);
-        if($content instanceof IComponent)
-            $this->addComponent($content, $name);
         return $panel->addContent($name, $content);
     }
 
     /**
      * Get panel
      * @param string $panelId
-     * @return Panel
+     * @param bool $throw
+     * @return Panel|null
      * @throws UnexistingPannelException
      */
-    public function getPanel(string $panelId): Panel
+    public function getPanel(string $panelId, bool $throw=true): ?Panel
     {
         if(!isset($this->panels[$panelId]))
-            throw new UnexistingPannelException('Panel "' . $panelId . '" does not exist');
+        {
+            if($throw === true)
+                throw new UnexistingPannelException('Panel "' . $panelId . '" does not exist');
+            return null;
+        }
         return $this->panels[$panelId];
     }
 
@@ -176,8 +205,7 @@ class BootstrapPanels extends Control
      */
     public function renderContentWrapper(string $contentName)
     {
-        return
-            $this->getActivePanel()->getContent()[$contentName]->getWrapper();
+        return $this->getActivePanel()->getContent()[$contentName]->getWrapper();
     }
 
     /**
@@ -200,25 +228,29 @@ class BootstrapPanels extends Control
         return $templates;
     }
 
+    /**
+     * Redraw panels
+     */
     public function handleRedrawPanels(): void
     {
         $this->redrawControl('panels');
     }
 
-    public function redrawHeader(): void
+    /**
+     * Before render
+     */
+    public function beforeRender(): void
     {
-        parent::redrawControl('panels');
-        $this->redrawControl('header');
+        if(is_callable($this->beforeRenderCallback))
+            call_user_func($this->beforeRenderCallback, $this);
     }
 
-    public function redrawBody(): void
-    {
-        parent::redrawControl('panels');
-        $this->redrawControl('body');
-    }
-
+    /**
+     * Renderer
+     */
     public function render(): void
     {
+        $this->beforeRender();
         $this->template->documentTemplates = $this->getDocumentTemplates();
         $this->template->templates = $this->getTemplates();
         $this->template->panels = $this->panels;
