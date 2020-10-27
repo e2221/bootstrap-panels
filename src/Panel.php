@@ -80,7 +80,7 @@ class Panel
      */
     public function addContent(string $name, $content): Content
     {
-        if($content instanceof IComponent && is_null($content->getPresenter()))
+        if($content instanceof IComponent && is_null($content->getPresenterIfExists()))
             $this->bootstrapPanels->addComponent($content, $name);
         return $this->content[$name] = new Content($this, $name, $content);
     }

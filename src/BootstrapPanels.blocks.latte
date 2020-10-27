@@ -4,29 +4,29 @@
 
 {block body}
     {include #body-start-tag}
-        {include #body-header-start-tag}
-            {include #body-title}
-            <div class="row">
-                <div class="col col-sm-10">
-                    {include #body-header-tabs-start}
-                        {include #body-header-tabs-inner}
-                    {include #body-header-tabs-end}
-                </div>
-                {ifset #body-right-content}
-                    <div class="col col-sm-2">
-                        {include #body-right-content}
-                    </div>
-                {/ifset}
+    {include #body-header-start-tag}
+    {include #body-title}
+    <div class="row">
+        <div class="col col-sm-10">
+            {include #body-header-tabs-start}
+            {include #body-header-tabs-inner}
+            {include #body-header-tabs-end}
+        </div>
+        {ifset #body-right-content}
+            <div class="col col-sm-2">
+                {include #body-right-content}
             </div>
-        {include #body-header-end-tag}
+        {/ifset}
+    </div>
+    {include #body-header-end-tag}
 
-        {include #body-body-strat-tag}
-            {ifset #panel-{$panel->getId()}}
-                {include #"panel-{$panel}"}
-            {else}
-                {include #content}
-            {/ifset}
-        {include #body-body-end-tag}
+    {include #body-body-strat-tag}
+    {ifset #panel-{$panel->getId()}}
+        {include #"panel-{$panel}"}
+    {else}
+        {include #content}
+    {/ifset}
+    {include #body-body-end-tag}
     {include #body-end-tag}
 {/block}
 
@@ -78,14 +78,14 @@
 {block body-header-tabs-inner}
     {foreach $panels as $panelKey => $definedPanel}
         {$documentTemplates->getBodyHeaderTabsItemsTemplate()->startTag()|noescape}
-            {php
-                $linkTemplate = $documentTemplates->getBodyHeaderTabsLinksTemplate();
-                $linkTemplate->setActive($panel->getId() == $panelKey);
-                $linkTemplate->setHref($control->link('redrawPanels!', ['panel'=>$definedPanel->getId()]));
-                $linkTemplate->setTextContent($definedPanel->getTitle());
-            }
-            {$linkTemplate->render()|noescape}
-            {*}<a class="nav-link {$panel->getId() == $panelKey ? 'active font-weight-bold'}" n:href="redrawPanels! panel=>$definedPanel->getId()">{$definedPanel->getTitle()}</a>{*}
+        {php
+            $linkTemplate = $documentTemplates->getBodyHeaderTabsLinksTemplate();
+            $linkTemplate->setActive($panel->getId() == $panelKey);
+            $linkTemplate->setHref($control->link('redrawPanels!', ['panel'=>$definedPanel->getId()]));
+            $linkTemplate->setTextContent($definedPanel->getTitle());
+        }
+        {$linkTemplate->render()|noescape}
+        {*}<a class="nav-link {$panel->getId() == $panelKey ? 'active font-weight-bold'}" n:href="redrawPanels! panel=>$definedPanel->getId()">{$definedPanel->getTitle()}</a>{*}
         {$documentTemplates->getBodyHeaderTabsItemsTemplate()->endTag()|noescape}
     {/foreach}
 {/block}
@@ -105,11 +105,11 @@
  *}
 {block content}
     {$control->renderActivePanelWrapper()?->startTag()|noescape}
-        {foreach $control->getActivePanelContent() as $contentName => $content}
-            {$content->getWrapper()?->startTag()|noescape}
-                {$content->render()}
-            {$content->getWrapper()?->endTag()|noescape}
-        {/foreach}
+    {foreach $control->getActivePanelContent() as $contentName => $content}
+        {$content->getWrapper()?->startTag()|noescape}
+        {$content->render()}
+        {$content->getWrapper()?->endTag()|noescape}
+    {/foreach}
     {$control->renderActivePanelWrapper()?->endTag()|noescape}
 
 {/block}

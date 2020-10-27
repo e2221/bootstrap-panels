@@ -125,7 +125,78 @@ class BootstrapPanels extends Control
     public function setPanel(string $panel, bool $throw=true): self
     {
         if($this->getPanel($panel, $throw))
+        {
             $this->panel = $panel;
+        }else{
+            $this->setPanelFirst();
+        }
+        return $this;
+    }
+
+    /**
+     * Set panel from key
+     * @param int $key
+     * @return $this
+     */
+    public function setPanelFromKey(int $key): self
+    {
+        if(count($this->panels) >= $key+1)
+        {
+            $this->panel = array_keys($this->panels)[$key];
+        }
+        return $this;
+    }
+
+    /**
+     * Set first panel as active
+     * @return $this
+     */
+    public function setPanelFirst(): self
+    {
+        if(count($this->panels) > 0)
+            $this->panel = (string)array_key_first($this->panels);
+        return $this;
+    }
+
+    /**
+     * Set next panel as active
+     * @return $this
+     */
+    public function setPanelNext(): self
+    {
+        if(count($this->panels) > 0)
+        {
+            $active = $this->getActivePanel();
+            $keys = array_keys($this->panels);
+            $activeKey = array_search($active, $keys);
+            if(isset($keys[$activeKey+1]))
+            {
+                $this->panel = $keys[$activeKey+1];
+            }else{
+                $this->setPanelFirst();
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Set previouse panel as active
+     * @return $this
+     */
+    public function setPanelPreviouse(): self
+    {
+        if(count($this->panels) > 0)
+        {
+            $active = $this->getActivePanel();
+            $keys = array_keys($this->panels);
+            $activeKey = array_search($active, $keys);
+            if(isset($keys[$activeKey-1]))
+            {
+                $this->panel = $keys[$activeKey-1];
+            }else{
+                $this->setPanelFirst();
+            }
+        }
         return $this;
     }
 
@@ -167,7 +238,9 @@ class BootstrapPanels extends Control
      */
     public function getActivePanel(): Panel
     {
-        return $this->panels[empty($this->panel) ? array_key_first($this->panels) : $this->panel];
+        if(empty($this->panel) || is_null($this->getPanel($this->panel, false)))
+            $this->setPanelFirst();
+        return $this->panels[$this->panel];
     }
 
     /**
