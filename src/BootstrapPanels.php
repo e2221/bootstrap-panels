@@ -158,13 +158,18 @@ class BootstrapPanels extends Control
      * @return $this
      * @throws UnexistingPannelException
      */
-    public function setPanel(string $panel, bool $throw=true): self
+    public function setPanel(string $panel, bool $ignoreNonExisting=false, bool $throw=false): self
     {
-        if($this->getPanel($panel, $throw))
+        if($ignoreNonExisting === true)
         {
             $this->panel = $panel;
         }else{
-            $this->setPanelFirst();
+            if($this->getPanel($panel, $throw))
+            {
+                $this->panel = $panel;
+            }else{
+                $this->setPanelFirst();
+            }
         }
         return $this;
     }
