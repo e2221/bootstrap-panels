@@ -35,17 +35,26 @@ class Panel
         $this->bootstrapPanels = $bootstrapPanels;
     }
 
+    /**
+     * Get panel title
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
+    /**
+     * Get panel id
+     * @return string
+     */
     public function getId(): string
     {
         return $this->id;
     }
 
     /**
+     * Get panel content
      * @return Content[]
      */
     public function getContent(): array
@@ -54,6 +63,7 @@ class Panel
     }
 
     /**
+     * Get content wrapper
      * @return BaseElement|Html|null
      */
     public function getContentWrapper()
@@ -85,6 +95,10 @@ class Panel
         return $this->content[$name] = new Content($this, $name, $content);
     }
 
+    /**
+     * Render panel
+     * @return string
+     */
     public function render()
     {
         $render = [];
@@ -93,6 +107,15 @@ class Panel
             $render[] = $content->render();
         }
         return implode("",$render);
+    }
+
+    /**
+     * End panel - go back to bootstrap panels main class
+     * @return BootstrapPanels
+     */
+    public function endPanel(): BootstrapPanels
+    {
+        return $this->bootstrapPanels;
     }
 
 

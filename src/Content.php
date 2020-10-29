@@ -36,6 +36,10 @@ class Content
         $this->panel = $panel;
     }
 
+    /**
+     * Get panel
+     * @return Panel
+     */
     public function getPanel(): Panel
     {
         return $this->panel;
@@ -61,9 +65,22 @@ class Content
         return $this;
     }
 
+    /**
+     * Render
+     * @return BaseElement|IComponent|Html|string|null
+     */
     public function render()
     {
         return $this->content instanceof IComponent ? $this->content->render() : $this->content;
+    }
+
+    /**
+     * End content - go back to panel
+     * @return Panel
+     */
+    public function endContent(): Panel
+    {
+        return $this->getPanel();
     }
 
 }

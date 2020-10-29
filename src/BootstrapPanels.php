@@ -109,16 +109,52 @@ class BootstrapPanels extends Control
      * Add Panel
      * @param string $id
      * @param string|null $title
+     * @param int|null $moveToPosition
      * @return Panel
      */
-    public function addPanel(string $id, string $title=null): Panel
+    public function addPanel(string $id, string $title=null, ?int $moveToPosition=null): Panel
     {
-        return $this->panels[$id] = new Panel($this, $id, $title);
+        $this->panels[$id] = new Panel($this, $id, $title);
+        if(is_numeric($moveToPosition))
+            $this->movePanelPosition($id, $moveToPosition);
+        return $this->panels[$id];
     }
+
+    /**
+     * Move panel to position [1 = first, 2 = second, ...]
+     * @param string $panelID
+     * @param int $position
+     * @return $this
+     */
+    public function movePanelPosition(string $panelID, int $position)
+    {
+        if(count($this->panels) > 0)
+        {
+            $newState = [];
+            $panelToMove = $this->getPanels()[$panelID];
+            unset($this->panels[$panelID]);
+            $panels = $this->getPanels();
+            $used = false;
+            foreach(array_keys($panels) as $key => $value)
+            {
+                if($key+1 == $position){
+                    $newState[$panelID] = $panelToMove;
+                    $used = true;
+                }
+                $newState[$value] = $panels[$value];
+            }
+            if($used === false)
+                $newState[$panelID] = $panelToMove;
+            $this->panels = $newState;
+        }
+        return $this;
+    }
+
 
     /**
      * Set active panel
      * @param string $panel
+     * @param bool $throw
      * @return $this
      * @throws UnexistingPannelException
      */
